@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Windows;
-using Mmu.Rl.WpfUi.Services;
+using Mmu.Rl.WpfUi.Domain.Services;
 
 namespace Mmu.Rl.WpfUi
 {

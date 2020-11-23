@@ -1,4 +1,4 @@
-﻿namespace Mmu.Rl.WpfUi.Models.QValues
+﻿namespace Mmu.Rl.WpfUi.Domain.Models.QValues
 {
     public class QCell
     {
@@ -9,9 +9,10 @@
             QValue = qValue;
         }
 
-        public State State { get; }
         public Action Action { get; }
         public double QValue { get; private set; }
+
+        public State State { get; }
 
         public void UpdateQValue(double value)
         {

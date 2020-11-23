@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Mmu.Rl.WpfUi.Models.Environments
+namespace Mmu.Rl.WpfUi.Domain.Models.Environments
 {
     public class Maze
     {

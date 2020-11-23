@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Mmu.Rl.WpfUi.Models
+namespace Mmu.Rl.WpfUi.Domain.Models
 {
     public class State : IEquatable<State>
     {

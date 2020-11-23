@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Mmu.Rl.WpfUi.Models;
-using Mmu.Rl.WpfUi.Models.QValues;
+using Mmu.Rl.WpfUi.Domain.Models;
+using Mmu.Rl.WpfUi.Domain.Models.QValues;
 
-namespace Mmu.Rl.WpfUi.Services
+namespace Mmu.Rl.WpfUi.Domain.Services
 {
     internal static class QTableFactory
     {

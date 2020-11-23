@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Mmu.Rl.WpfUi.Models.QValues
+namespace Mmu.Rl.WpfUi.Domain.Models.QValues
 {
     public class QTable
     {

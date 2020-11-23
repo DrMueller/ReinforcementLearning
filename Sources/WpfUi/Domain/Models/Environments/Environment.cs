@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
-using Mmu.Rl.WpfUi.Models.QValues;
-using Mmu.Rl.WpfUi.Services;
+using Mmu.Rl.WpfUi.Domain.Models.QValues;
+using Mmu.Rl.WpfUi.Ui.Services;
 
-namespace Mmu.Rl.WpfUi.Models.Environments
+namespace Mmu.Rl.WpfUi.Domain.Models.Environments
 {
     public class Environment
     {
-        private readonly int _mazeSize;
-        private State _currentState;
         private readonly Maze _maze;
+        private readonly int _mazeSize;
 
         private readonly IDictionary<Action, Func<MazeField, ActionResult>> _moves;
+        private State _currentState;
 
         public Environment(int mazeSize)
         {
@@ -28,13 +28,14 @@ namespace Mmu.Rl.WpfUi.Models.Environments
             };
         }
 
-        public void Render(Canvas canvas, QTable qTable)
+        public void InitializeRenderer(Canvas canvas)
         {
-            EnvironmentRenderer.Render(
-                _maze,
-                qTable,
-                _currentState,
-                canvas);
+            Renderer.InitializeRenderer(_maze, canvas);
+        }
+
+        public void Render(QTable qTable)
+        {
+            Renderer.RenderEnvironment(qTable, _currentState);
         }
 
         public Observation Reset()
@@ -43,6 +44,7 @@ namespace Mmu.Rl.WpfUi.Models.Environments
             var startingRow = rnd.Next(_mazeSize);
             var startingCol = rnd.Next(_mazeSize);
             _currentState = new State(startingRow, startingCol);
+
             return new Observation(_currentState);
         }
 
@@ -71,7 +73,7 @@ namespace Mmu.Rl.WpfUi.Models.Environments
 
             switch (action)
             {
-                case Action.Down when _currentState.Row == (_mazeSize -1):
+                case Action.Down when _currentState.Row == _mazeSize - 1:
                     caughtBorder = true;
 
                     break;
@@ -83,7 +85,7 @@ namespace Mmu.Rl.WpfUi.Models.Environments
                     caughtBorder = true;
 
                     break;
-                case Action.Right when _currentState.Column == (_mazeSize -1):
+                case Action.Right when _currentState.Column == _mazeSize - 1:
                     caughtBorder = true;
 
                     break;

@@ -1,10 +1,9 @@
-﻿using System.Diagnostics;
-using System.Threading;
+﻿using System.Threading;
 using System.Windows.Controls;
-using Mmu.Rl.WpfUi.Models;
-using Mmu.Rl.WpfUi.Models.Environments;
+using Mmu.Rl.WpfUi.Domain.Models;
+using Mmu.Rl.WpfUi.Domain.Models.Environments;
 
-namespace Mmu.Rl.WpfUi.Services
+namespace Mmu.Rl.WpfUi.Domain.Services
 {
     public static class Runner
     {
@@ -17,9 +16,12 @@ namespace Mmu.Rl.WpfUi.Services
 
             var qTable = QTableFactory.Create(MazeSize);
             var environment = new Environment(MazeSize);
+            environment.InitializeRenderer(canvas);
 
             // Start new episode
-            for (var i = 0; i < AmountOfEpisodes; i++)
+            while (true)
+
+                //for (var i = 0; i < AmountOfEpisodes; i++)
             {
                 var observation = environment.Reset();
                 var nextAction = qTable.GetNextAction(observation.State);
@@ -32,7 +34,7 @@ namespace Mmu.Rl.WpfUi.Services
                 {
                     var actionResult = environment.Step(nextAction);
                     Thread.Sleep(100);
-                    environment.Render(canvas, qTable);
+                    environment.Render(qTable);
 
                     nextAction = qTable.GetNextAction(actionResult.Observation.State);
 
@@ -48,11 +50,11 @@ namespace Mmu.Rl.WpfUi.Services
                         }
                         else
                         {
-                            // SARSA 
                             var newQTableValue = qTable.GetQValue(
                                 actionResult.Observation.State,
                                 nextAction);
 
+                            // SARSA 
                             newQValue += LearningRate * (actionResult.Reward.Value * DiscountFactor * newQTableValue - oldQValue);
                         }
 

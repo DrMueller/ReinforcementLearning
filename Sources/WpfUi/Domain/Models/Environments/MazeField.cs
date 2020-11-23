@@ -1,4 +1,4 @@
-﻿namespace Mmu.Rl.WpfUi.Models.Environments
+﻿namespace Mmu.Rl.WpfUi.Domain.Models.Environments
 {
     public class MazeField
     {
