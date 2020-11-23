@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Mmu.Rl.WpfUi.Models.Environments
 {
     public class Maze
     {
-        public Maze(IReadOnlyCollection<MazeField> fields)
+        private Maze(IReadOnlyCollection<MazeField> fields)
         {
             Fields = fields;
         }
@@ -13,13 +14,16 @@ namespace Mmu.Rl.WpfUi.Models.Environments
 
         public static Maze Create(int mazeSize)
         {
+            var rnd = new Random();
+            var winnerCol = rnd.Next(mazeSize - 1);
+            var winnerRow = rnd.Next(mazeSize - 1);
             var fields = new List<MazeField>();
 
             for (var row = 0; row < mazeSize; row++)
             {
                 for (var col = 0; col < mazeSize; col++)
                 {
-                    fields.Add(new MazeField(row, col, col == 5 && row == 5));
+                    fields.Add(new MazeField(row, col, col == winnerCol && row == winnerRow));
                 }
             }
 

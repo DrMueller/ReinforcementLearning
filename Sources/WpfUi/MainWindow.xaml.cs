@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows;
 using Mmu.Rl.WpfUi.Services;
 
@@ -12,14 +11,13 @@ namespace Mmu.Rl.WpfUi
             InitializeComponent();
         }
 
-        protected override async void OnActivated(EventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            base.OnActivated(e);
-
-            await Task.Run(() =>
-            {
-                Runner.Run(Cnv);
-            });
+            await Task.Run(
+                () =>
+                {
+                    Runner.Run(Cnv);
+                });
         }
     }
 }

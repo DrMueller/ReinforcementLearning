@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Diagnostics;
+using System.Threading;
 using System.Windows.Controls;
 using Mmu.Rl.WpfUi.Models;
 using Mmu.Rl.WpfUi.Models.Environments;
@@ -12,7 +13,7 @@ namespace Mmu.Rl.WpfUi.Services
             const double LearningRate = 0.4;
             const double DiscountFactor = 0.999;
             const int AmountOfEpisodes = 10000;
-            const int MazeSize = 10;
+            const int MazeSize = 20;
 
             var qTable = QTableFactory.Create(MazeSize);
             var environment = new Environment(MazeSize);
@@ -29,9 +30,10 @@ namespace Mmu.Rl.WpfUi.Services
                 // Start timeline
                 for (var timeStamp = 0; timeStamp <= 2500; timeStamp++)
                 {
-                    Thread.Sleep(500);
-                    environment.Render(canvas);
                     var actionResult = environment.Step(nextAction);
+                    Thread.Sleep(100);
+                    environment.Render(canvas, qTable);
+
                     nextAction = qTable.GetNextAction(actionResult.Observation.State);
 
                     if (prevState != null)
@@ -41,6 +43,7 @@ namespace Mmu.Rl.WpfUi.Services
 
                         if (actionResult.IsDone)
                         {
+                            // As we are in an endstate, no future rewards need to be calculated
                             newQValue += LearningRate * (actionResult.Reward.Value - oldQValue);
                         }
                         else
@@ -53,13 +56,17 @@ namespace Mmu.Rl.WpfUi.Services
                             newQValue += LearningRate * (actionResult.Reward.Value * DiscountFactor * newQTableValue - oldQValue);
                         }
 
-                        qTable.SetQValue(prevState,
-                            nextAction,
-                            newQValue);
+                        // SARSA calculates the previous value, therefore update this one
+                        qTable.SetQValue(prevState, prevAction, newQValue);
                     }
 
                     prevState = actionResult.Observation.State;
                     prevAction = nextAction;
+
+                    if (actionResult.IsDone)
+                    {
+                        break;
+                    }
                 }
             }
         }

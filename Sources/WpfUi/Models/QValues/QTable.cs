@@ -14,11 +14,12 @@ namespace Mmu.Rl.WpfUi.Models.QValues
 
         public Action GetNextAction(State state)
         {
-            return Cells
-                .Where(cell => cell.State == state)
-                .OrderByDescending(f => f.QValue)
-                .First()
-                .Action;
+            return
+                Cells
+                    .Where(cell => cell.State == state)
+                    .OrderByDescending(f => f.QValue)
+                    .First()
+                    .Action;
         }
 
         public double GetQValue(State state, Action action)

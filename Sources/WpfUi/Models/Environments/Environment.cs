@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
+using Mmu.Rl.WpfUi.Models.QValues;
 using Mmu.Rl.WpfUi.Services;
 
 namespace Mmu.Rl.WpfUi.Models.Environments
@@ -10,7 +11,7 @@ namespace Mmu.Rl.WpfUi.Models.Environments
     {
         private readonly int _mazeSize;
         private State _currentState;
-        private Maze _maze;
+        private readonly Maze _maze;
 
         private readonly IDictionary<Action, Func<MazeField, ActionResult>> _moves;
 
@@ -27,19 +28,21 @@ namespace Mmu.Rl.WpfUi.Models.Environments
             };
         }
 
-        public void Render(Canvas canvas)
+        public void Render(Canvas canvas, QTable qTable)
         {
             EnvironmentRenderer.Render(
                 _maze,
+                qTable,
                 _currentState,
                 canvas);
         }
 
         public Observation Reset()
         {
-            _currentState = new State(0, 0);
-            _maze = Maze.Create(_mazeSize);
-
+            var rnd = new Random();
+            var startingRow = rnd.Next(_mazeSize);
+            var startingCol = rnd.Next(_mazeSize);
+            _currentState = new State(startingRow, startingCol);
             return new Observation(_currentState);
         }
 
@@ -56,7 +59,7 @@ namespace Mmu.Rl.WpfUi.Models.Environments
 
             if (winningField.Column == _currentState.Column && winningField.Row == _currentState.Row)
             {
-                return new ActionResult(new Observation(_currentState), new Reward(0), true);
+                return new ActionResult(new Observation(_currentState), new Reward(1000), true);
             }
 
             return _moves[action](winningField);
@@ -68,11 +71,11 @@ namespace Mmu.Rl.WpfUi.Models.Environments
 
             switch (action)
             {
-                case Action.Down when _currentState.Row == 0:
+                case Action.Down when _currentState.Row == (_mazeSize -1):
                     caughtBorder = true;
 
                     break;
-                case Action.Up when _currentState.Row == _mazeSize:
+                case Action.Up when _currentState.Row == 0:
                     caughtBorder = true;
 
                     break;
@@ -80,7 +83,7 @@ namespace Mmu.Rl.WpfUi.Models.Environments
                     caughtBorder = true;
 
                     break;
-                case Action.Right when _currentState.Column == _mazeSize:
+                case Action.Right when _currentState.Column == (_mazeSize -1):
                     caughtBorder = true;
 
                     break;
@@ -88,7 +91,7 @@ namespace Mmu.Rl.WpfUi.Models.Environments
 
             if (caughtBorder)
             {
-                return (true, new ActionResult(new Observation(_currentState), new Reward(-100), false));
+                return (true, new ActionResult(new Observation(_currentState), new Reward(-1000), true));
             }
 
             return (false, null);

@@ -14,10 +14,10 @@ namespace Mmu.Rl.WpfUi.Services
             {
                 for (var col = 0; col < amountOfFields; col++)
                 {
-                    cells.Add(new QCell(new State(row, col), Action.Down, -1));
-                    cells.Add(new QCell(new State(row, col), Action.Left, -1));
-                    cells.Add(new QCell(new State(row, col), Action.Right, -1));
-                    cells.Add(new QCell(new State(row, col), Action.Up, -1));
+                    cells.Add(new QCell(new State(row, col), Action.Down, 1));
+                    cells.Add(new QCell(new State(row, col), Action.Left, 1));
+                    cells.Add(new QCell(new State(row, col), Action.Right, 1));
+                    cells.Add(new QCell(new State(row, col), Action.Up, 1));
                 }
             }
 
