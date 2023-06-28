@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using Mmu.Rl.WpfUi.Domain.Models;
 using Mmu.Rl.WpfUi.Domain.Models.Environments;
+using Mmu.Rl.WpfUi.Ui.Services;
 
 namespace Mmu.Rl.WpfUi.Domain.Services
 {
@@ -11,7 +12,6 @@ namespace Mmu.Rl.WpfUi.Domain.Services
         {
             const double LearningRate = 0.4;
             const double DiscountFactor = 0.999;
-            const int AmountOfEpisodes = 10000;
             const int MazeSize = 20;
 
             var qTable = QTableFactory.Create(MazeSize);
@@ -21,7 +21,6 @@ namespace Mmu.Rl.WpfUi.Domain.Services
             // Start new episode
             while (true)
 
-                //for (var i = 0; i < AmountOfEpisodes; i++)
             {
                 var observation = environment.Reset();
                 var nextAction = qTable.GetNextAction(observation.State);
@@ -33,7 +32,7 @@ namespace Mmu.Rl.WpfUi.Domain.Services
                 for (var timeStamp = 0; timeStamp <= 2500; timeStamp++)
                 {
                     var actionResult = environment.Step(nextAction);
-                    Thread.Sleep(100);
+                    Thread.Sleep(SpeedManager.SpeedInMiliSeconds);
                     environment.Render(qTable);
 
                     nextAction = qTable.GetNextAction(actionResult.Observation.State);

@@ -7,5 +7,29 @@
 								Loaded="Window_Loaded"
 								mc:Ignorable="d"
 								Title="MainWindow" Height="450" Width="800">
-	<Canvas x:Name="Cnv" />
+
+	<Window.Resources>
+		<Style TargetType="Button">
+			<Setter Property="Width" Value="80" />
+			<Setter Property="Height" Value="30" />
+			<Setter Property="Margin" Value="0, 0, 0, 10" />
+		</Style>
+
+	</Window.Resources>
+
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="Auto" />
+		</Grid.ColumnDefinitions>
+
+		<Canvas x:Name="Cnv" />
+
+		<StackPanel Orientation="Vertical" Grid.Column="1">
+			<Button Name="SpeedUp" Click="SpeedUp_Click">+</Button>
+			<Button Name="SpeedDown" Click="SpeedDown_Click">-</Button>
+			<Button Name="MaxSpeed" Click="MaxSpeed_Click">Max</Button>
+			<Button Name="MinSpeed" Click="MinSpeed_Click">Min</Button>
+		</StackPanel>
+	</Grid>
 </Window>
